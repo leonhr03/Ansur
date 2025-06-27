@@ -19,7 +19,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#E06363"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.leon.ansur"
     },
     "web": {
       "bundler": "metro",
@@ -40,6 +41,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "f26105f8-71b8-4f15-89c0-9e5ee7b2fc37"
+      }
     }
   }
 }

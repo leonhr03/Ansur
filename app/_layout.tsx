@@ -2,6 +2,8 @@ import { Tabs } from 'expo-router';
 import 'react-native-reanimated';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import {Ionicons} from "@expo/vector-icons";
+import account from "@/app/account";
 
 export default function RootLayout() {
     // @ts-ignore
@@ -20,11 +22,28 @@ export default function RootLayout() {
                         marginRight: 10,
                         padding: 20,
                     },
+
+
+                    tabBarLabelStyle: {
+                        color: '#E06363',
+                    }
                 }}
             >
-                <Tabs.Screen name="account" />
-                <Tabs.Screen name="home" />
-                <Tabs.Screen name="survey" />
+                <Tabs.Screen name="survey" options={{
+                    tabBarIcon: ({color, size}) => (
+                        <Ionicons name="clipboard-outline" color="#E06363" size={20}></Ionicons>
+                    ),
+                }}/>
+                <Tabs.Screen name="home" options={{
+                    tabBarIcon: ({color, size}) => (
+                        <Ionicons name="home-outline" color="#E06363" size={20}></Ionicons>
+                    ),
+                }} />
+                <Tabs.Screen name="account" options={{
+                    tabBarIcon: ({color, size}) => (
+                        <Ionicons name="person-outline" color="#E06363" size={20}></Ionicons>
+                    ),
+                }}/>
             </Tabs>
         </SafeAreaView>
     );
@@ -34,5 +53,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#E06363',
+        padding: 16,
     },
 });

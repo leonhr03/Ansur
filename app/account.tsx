@@ -1,11 +1,11 @@
-import {StyleSheet, View, Text} from "react-native";
+import {StyleSheet, Text, SafeAreaView} from "react-native";
 
 export default function account(){
     // @ts-ignore
     return(
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <Text style={styles.heading}>Account</Text>
-        </View>
+        </SafeAreaView>
     )
 }
 
@@ -14,10 +14,12 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 25,
         fontWeight: "bold",
+        color: "#EF9999"
     },
 
     container: {
         flex: 1,
-        backgroundColor: "#E06363"
+        backgroundColor: "#E06363",
+        padding: 16,
     }
 })
