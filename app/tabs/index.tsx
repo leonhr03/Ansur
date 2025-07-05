@@ -1,4 +1,6 @@
 import {StyleSheet, View, Text, SafeAreaView, FlatList, ListRenderItem, Button, TouchableOpacity} from "react-native";
+import 'react-native-url-polyfill/auto';
+
 
 function comming(){
     alert("comming soon...")
@@ -78,7 +80,6 @@ const styles = StyleSheet.create({
 
 
     },
-
 
     text: {
         color: "#EF9999",
