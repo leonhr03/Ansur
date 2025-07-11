@@ -3,7 +3,6 @@ import 'react-native-reanimated';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import {Ionicons} from "@expo/vector-icons";
-import account from "@/app/tabs/account";
 
 export default function RootLayout() {
     // @ts-ignore
@@ -22,7 +21,6 @@ export default function RootLayout() {
                         marginRight: 10,
                         padding: 20,
                     },
-
 
                     tabBarLabelStyle: {
                         color: '#E06363',

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity } from 'react-native';
-import { supabase } from "@/supabase";
 import { useNavigation } from '@react-navigation/native';
 import {Colors} from "@/constants/Colors";
 
@@ -10,18 +9,6 @@ export default function LoginScreen() {
     const navigation = useNavigation();
 
     const handleLogin = async () => {
-        const { error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        });
-
-        if (error) {
-            Alert.alert('Fehler', error.message);
-        } else {
-            // ✅ Navigation zur "app"-Seite
-            // @ts-ignore
-            navigation.navigate('app');
-        }
     };
 
     return (
