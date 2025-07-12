@@ -1,3 +1,4 @@
+import React from 'react';
 import { Tabs } from 'expo-router';
 import 'react-native-reanimated';
 import { SafeAreaView, StyleSheet } from 'react-native';

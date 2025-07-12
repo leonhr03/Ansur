@@ -1,3 +1,4 @@
+import React from 'react';
 import LoginScreen from "@/app/index";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import RootLayout from "@/app/tabs/_layout";

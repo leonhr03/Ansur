@@ -1,3 +1,4 @@
+import React from 'react';
 import {StyleSheet, View, Text, SafeAreaView, FlatList, ListRenderItem, Button, TouchableOpacity} from "react-native";
 import 'react-native-url-polyfill/auto';
 
