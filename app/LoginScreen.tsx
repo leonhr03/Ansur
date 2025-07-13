@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter } from "expo-router";
-import { auth } from '../firebase';
+import { auth } from '@/firebase';
 
 
 
@@ -42,7 +42,7 @@ export default function LoginScreen() {
                 value={password}
                 onChangeText={setPassword}
             />
-            <TouchableOpacity style={styles.button} >
+            <TouchableOpacity style={styles.button} onPress={login}>
                 <Text style={styles.buttonText}>Einloggen</Text>
             </TouchableOpacity>
             {message ? <Text style={styles.message}>{message}</Text> : null}
