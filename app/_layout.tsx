@@ -1,14 +1,21 @@
 import React from 'react';
-import LoginScreen from "@/app/index";
+import LoginScreen from "@/app/LoginScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import RootLayout from "@/app/tabs/_layout";
 
-const Stack = createNativeStackNavigator();
+
+export type AuthStackParamList = {
+    Login: undefined;
+    app: undefined;
+};
+
+
+const Stack = createNativeStackNavigator<AuthStackParamList>();
 
 export default function AuthLayout() {
     return (
-        <Stack.Navigator initialRouteName="index">
-            <Stack.Screen name="index" component={LoginScreen}  options={{ headerShown: false, }} />
+        <Stack.Navigator initialRouteName="Login">
+            <Stack.Screen name="Login" component={LoginScreen}  options={{ headerShown: false, }} />
             <Stack.Screen name="app" component={RootLayout}  options={{ headerShown: false, }} />
         </Stack.Navigator>
     );

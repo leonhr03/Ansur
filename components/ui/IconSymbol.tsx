@@ -1,41 +1,94 @@
-// Fallback for using MaterialIcons on Android and web.
+// src/components/IconComponent.tsx
+import React from 'react';
 
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { SymbolWeight, SymbolViewProps } from 'expo-symbols';
-import { ComponentProps } from 'react';
-import { OpaqueColorValue, type StyleProp, type TextStyle } from 'react-native';
+// 1. Zuerst definieren wir den korrekten IconMapping-Typ
+type IconName = "alarm" | "bolt" | "book" | "bookmark" | "camera" | "circle"
+    | "clear" | "cloud" | "crop" | "eject" | "flag" | "folder" | "forward"
+    | "headphones" | "hexagon" | "house" | "info" /* ... weitere Icons */;
 
-type IconMapping = Record<SymbolViewProps['name'], ComponentProps<typeof MaterialIcons>['name']>;
-type IconSymbolName = keyof typeof MAPPING;
+type IconMapping = Record<IconName, string>;
 
-/**
- * Add your SF Symbols to Material Icons mappings here.
- * - see Material Icons in the [Icons Directory](https://icons.expo.fyi).
- * - see SF Symbols in the [SF Symbols](https://developer.apple.com/sf-symbols/) app.
- */
-const MAPPING = {
-  'house.fill': 'index',
-  'paperplane.fill': 'send',
-  'chevron.left.forwardslash.chevron.right': 'code',
-  'chevron.right': 'chevron-right',
-} as IconMapping;
-
-/**
- * An icon component that uses native SF Symbols on iOS, and Material Icons on Android and web.
- * This ensures a consistent look across platforms, and optimal resource usage.
- * Icon `name`s are based on SF Symbols and require manual mapping to Material Icons.
- */
-export function IconSymbol({
-  name,
-  size = 24,
-  color,
-  style,
-}: {
-  name: IconSymbolName;
-  size?: number;
-  color: string | OpaqueColorValue;
-  style?: StyleProp<TextStyle>;
-  weight?: SymbolWeight;
-}) {
-  return <MaterialIcons color={color} size={size} name={MAPPING[name]} style={style} />;
+// 2. Safe-Variante mit Type-Predicate zur Validierung
+function isValidIcon(icon: string): icon is IconName {
+  const validIcons: IconName[] = [
+    "alarm", "bolt", "book", "bookmark", "camera", "circle",
+    "clear", "cloud", "crop", "eject", "flag", "folder",
+    "forward", "headphones", "hexagon", "house", "info"
+  ];
+  return validIcons.includes(icon as IconName);
 }
+
+// 3. Komponente, die das IconMapping sicher verwendet
+export const IconSymbol = ({iconName, name, size, weight, color, style}: {
+  iconName?: string,
+  name?: string,
+  size?: number,
+  weight?: string,
+  color?: string,
+  style?: { transform: { rotate: string }[] }
+}) => {
+  // 4. Sicherer Umgang mit string | undefined Werten
+  const getSafeIcon = (): IconName | undefined => {
+    if (!iconName) return undefined;
+    return isValidIcon(iconName) ? iconName : undefined;
+  };
+
+  const currentIcon = getSafeIcon();
+
+  // 5. Beispiel für Icon-Mapping mit Typ-Sicherheit
+  const iconMap: IconMapping = {
+    alarm: "⏰",
+    bolt: "⚡",
+    book: "📖",
+    bookmark: "🔖",
+    camera: "📷",
+    circle: "🔘",
+    clear: "❌",
+    cloud: "☁️",
+    crop: "✂️",
+    eject: "⏏️",
+    flag: "🚩",
+    folder: "📁",
+    forward: "⏩",
+    headphones: "🎧",
+    hexagon: "⬢",
+    house: "🏠",
+    info: "ℹ️"
+  };
+
+  return (
+      <div className="icon-container">
+        {currentIcon ? (
+            <span className="icon">{iconMap[currentIcon]}</span>
+        ) : (
+            <span className="icon-placeholder">No icon selected</span>
+        )}
+      </div>
+  );
+};
+
+// CSS-Teil (optional)
+const styles = `
+  .icon-container {
+    font-size: 2rem;
+    padding: 1rem;
+  }
+  .icon-placeholder {
+    color: #ccc;
+  }
+`;
+
+// 6. Beispielverwendung
+const App = () => {
+  return (
+      <>
+        <style>{styles}</style>
+        <IconSymbol iconName="house" /> {/* Korrekt */}
+        <IconSymbol iconName="camera" /> {/* Korrekt */}
+        <IconSymbol iconName="invalid" /> {/* Wird abgefangen */}
+        <IconSymbol /> {/* Undefined-Handling */}
+      </>
+  );
+};
+
+export default App;
