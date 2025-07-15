@@ -17,7 +17,7 @@ const data: DataItem[] = [
     { id: '2', title: 'question 2' },
     { id: '3', title: 'question 3' },
 ];
-export default function index(){
+export default function home(){
 
     const renderItem: ListRenderItem<DataItem> = ({ item }) => (
         <View style={styles.item}>

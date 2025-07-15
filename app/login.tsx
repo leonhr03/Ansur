@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { useRouter } from "expo-router";
+import {Link, useRouter} from "expo-router";
 import { auth } from '@/firebase';
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 
 
-export default function LoginScreen() {
+
+
+export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
@@ -15,13 +18,14 @@ export default function LoginScreen() {
 
     const login = async () => {
         try {
-            await auth.signInWithEmailAndPassword(email, password);
+            await signInWithEmailAndPassword(auth, email, password);
             setMessage("Login erfolgreich!");
-            router.push("/tabs/account");
+            router.replace("/tabs/home");
         } catch (error: any) {
             setMessage(error.message);
         }
     };
+
 
 
     return (
@@ -43,8 +47,9 @@ export default function LoginScreen() {
                 onChangeText={setPassword}
             />
             <TouchableOpacity style={styles.button} onPress={login}>
-                <Text style={styles.buttonText}>Einloggen</Text>
+                <Text style={styles.buttonText}>login</Text>
             </TouchableOpacity>
+            <Link href={"/register"} style={styles.link}>Don`t have a Account? Create one</Link>
             {message ? <Text style={styles.message}>{message}</Text> : null}
         </View>
     );
@@ -84,5 +89,11 @@ const styles = StyleSheet.create({
         marginTop: 20,
         textAlign: 'center',
         color: 'red',
+    },
+
+    link: {
+        textAlign: "center",
+        color: "#EF9999",
+        marginTop: 15,
     }
 });
