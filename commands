@@ -1,0 +1,2 @@
+$env:EAS_NO_VCS=1
+npx eas build --platform android --profile release
