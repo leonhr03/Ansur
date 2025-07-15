@@ -33,7 +33,7 @@ export default function RootLayout() {
                         <Ionicons name="clipboard-outline" color="#E06363" size={20}></Ionicons>
                     ),
                 }}/>
-                <Tabs.Screen name="index" options={{
+                <Tabs.Screen name="home" options={{
                     tabBarIcon: ({color, size}) => (
                         <Ionicons name="home-outline" color="#E06363" size={20}></Ionicons>
                     ),
