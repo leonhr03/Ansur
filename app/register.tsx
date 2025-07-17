@@ -49,7 +49,7 @@ export default function Register() {
             <TouchableOpacity style={styles.button} onPress={register}>
                 <Text style={styles.buttonText}>register</Text>
             </TouchableOpacity>
-            <Link href={"/login"} style={styles.link}>Already have a Account? Log in</Link>
+            <Link href="/" style={styles.link}>Already have a Account? Log in</Link>
             {message ? <Text style={styles.message}>{message}</Text> : null}
         </View>
     );
@@ -57,8 +57,9 @@ export default function Register() {
 
 const styles = StyleSheet.create({
     container: { flex: 1, justifyContent: 'center', padding: 20, backgroundColor: "#E06363", },
-    title: { fontSize: 24, marginBottom: 70, textAlign: 'center', color: "#EF9999" },
+    title: { fontSize: 30, marginBottom: 70, textAlign: 'center', color: "#EF9999" },
     input: {
+        fontSize: 20,
         borderWidth: 1,
         borderColor: '#EF9999',
         padding: 12,
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: 'white',
-        fontSize: 16,
+        fontSize: 20,
         textAlign: 'center',
     },
     message: {
@@ -94,6 +95,6 @@ const styles = StyleSheet.create({
     link: {
         textAlign: "center",
         color: "#EF9999",
-        marginTop: 15,
+        marginTop: 20,
     }
 });

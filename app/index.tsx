@@ -8,7 +8,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 
 
 
-export default function Login() {
+export default function Index() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
@@ -19,8 +19,10 @@ export default function Login() {
     const login = async () => {
         try {
             await signInWithEmailAndPassword(auth, email, password);
-            setMessage("Login erfolgreich!");
+            console.log("Login success, navigating...");
             router.replace("/tabs/home");
+            console.log("Navigation triggered");
+
         } catch (error: any) {
             setMessage(error.message);
         }
@@ -57,8 +59,9 @@ export default function Login() {
 
 const styles = StyleSheet.create({
     container: { flex: 1, justifyContent: 'center', padding: 20, backgroundColor: "#E06363", },
-    title: { fontSize: 24, marginBottom: 70, textAlign: 'center', color: "#EF9999" },
+    title: { fontSize: 30, marginBottom: 70, textAlign: 'center', color: "#EF9999" },
     input: {
+        fontSize: 20,
         borderWidth: 1,
         borderColor: '#EF9999',
         padding: 12,
@@ -82,7 +85,7 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: 'white',
-        fontSize: 16,
+        fontSize: 20,
         textAlign: 'center',
     },
     message: {
@@ -94,6 +97,6 @@ const styles = StyleSheet.create({
     link: {
         textAlign: "center",
         color: "#EF9999",
-        marginTop: 15,
+        marginTop: 20,
     }
 });
