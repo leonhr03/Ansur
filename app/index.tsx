@@ -1,34 +1,24 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import {Link, useRouter} from "expo-router";
-import { auth } from '@/firebase';
+import { useRouter } from "expo-router";
 import { signInWithEmailAndPassword } from "firebase/auth";
-
-
-
-
+import { getFirebaseAuth } from "@/firebase";
 
 export default function Index() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
-
     const router = useRouter();
-
 
     const login = async () => {
         try {
+            const auth = getFirebaseAuth();
             await signInWithEmailAndPassword(auth, email, password);
-            console.log("Login success, navigating...");
             router.replace("/tabs/home");
-            console.log("Navigation triggered");
-
         } catch (error: any) {
             setMessage(error.message);
         }
     };
-
-
 
     return (
         <View style={styles.container}>
@@ -49,13 +39,16 @@ export default function Index() {
                 onChangeText={setPassword}
             />
             <TouchableOpacity style={styles.button} onPress={login}>
-                <Text style={styles.buttonText}>login</Text>
+                <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
-            <Link href={"/register"} style={styles.link}>Don`t have a Account? Create one</Link>
+            <TouchableOpacity onPress={() => router.push("/register")}>
+                <Text style={styles.link}>Don't have an account? Create one</Text>
+            </TouchableOpacity>
             {message ? <Text style={styles.message}>{message}</Text> : null}
         </View>
     );
 }
+
 
 const styles = StyleSheet.create({
     container: { flex: 1, justifyContent: 'center', padding: 20, backgroundColor: "#E06363", },

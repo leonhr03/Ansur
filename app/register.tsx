@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import {Link, useRouter} from "expo-router";
-import { auth } from '@/firebase';
+import { getFirebaseAuth } from "@/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
 
@@ -19,6 +19,7 @@ export default function Register() {
 
     const register = async () => {
         try {
+            const auth = getFirebaseAuth();
             await createUserWithEmailAndPassword(auth, email, password);
             setMessage("Registrierung erfolgreich!");
             router.replace("/tabs/home");
@@ -49,8 +50,9 @@ export default function Register() {
             <TouchableOpacity style={styles.button} onPress={register}>
                 <Text style={styles.buttonText}>register</Text>
             </TouchableOpacity>
-            <Link href="/" style={styles.link}>Already have a Account? Log in</Link>
-            {message ? <Text style={styles.message}>{message}</Text> : null}
+            <TouchableOpacity onPress={() => router.push("/register")}>
+                <Text style={styles.link}>Already have a Account? Log in</Text>
+            </TouchableOpacity>
         </View>
     );
 }
