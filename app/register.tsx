@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import {Link, useRouter} from "expo-router";
+import { useRouter} from "expo-router";
 import { getFirebaseAuth } from "@/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-
-
-
-
 
 
 export default function Register() {
@@ -53,6 +49,7 @@ export default function Register() {
             <TouchableOpacity onPress={() => router.push("/register")}>
                 <Text style={styles.link}>Already have a Account? Log in</Text>
             </TouchableOpacity>
+            {message ? <Text style={styles.message}>{message}</Text> : null}
         </View>
     );
 }

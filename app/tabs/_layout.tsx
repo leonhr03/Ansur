@@ -1,57 +1,67 @@
-import React from 'react';
 import { Tabs } from 'expo-router';
-import 'react-native-reanimated';
-import { SafeAreaView, StyleSheet } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import {Ionicons} from "@expo/vector-icons";
+import { SafeAreaView } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-export default function RootLayout() {
-    // @ts-ignore
+export default function TabsLayout() {
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#EF9999' }}>
             <StatusBar style="dark" backgroundColor="#E06363" />
             <Tabs
                 screenOptions={{
                     headerShown: false,
+                    tabBarActiveTintColor: '#E06363',
+                    tabBarInactiveTintColor: '#E06363',
                     tabBarStyle: {
                         borderRadius: 15,
-                        borderColor: '#EF9999',
                         backgroundColor: '#EF9999',
-                        marginBottom: 10,
+                        marginBottom: 16,
                         marginLeft: 10,
                         marginRight: 10,
                         padding: 20,
+                        position: 'absolute',
+                        elevation: 1,
+                        borderWidth: 1,
+                        borderColor: '#EF9999',
                     },
-
                     tabBarLabelStyle: {
                         color: '#E06363',
-                    }
+                    },
                 }}
             >
-                <Tabs.Screen name="survey" options={{
-                    tabBarIcon: ({color, size}) => (
-                        <Ionicons name="clipboard-outline" color="#E06363" size={20}></Ionicons>
-                    ),
-                }}/>
-                <Tabs.Screen name="home" options={{
-                    tabBarIcon: ({color, size}) => (
-                        <Ionicons name="home-outline" color="#E06363" size={20}></Ionicons>
-                    ),
-                }} />
-                <Tabs.Screen name="account" options={{
-                    tabBarIcon: ({color, size}) => (
-                        <Ionicons name="person-outline" color="#E06363" size={20}></Ionicons>
-                    ),
-                }}/>
+
+                {/* 2. Survey */}
+                <Tabs.Screen
+                    name="survey"
+                    options={{
+                        tabBarLabel: 'Umfrage',
+                        tabBarIcon: ({ color, size, focused }) => (
+                            <Ionicons name={focused ? 'clipboard' : 'clipboard-outline'} size={size} color={color} />
+                        ),
+                    }}
+                />
+                {/* 1. Home */}
+                <Tabs.Screen
+                    name="home"
+                    options={{
+                        tabBarLabel: 'Home',
+                        tabBarIcon: ({ color, size, focused }) => (
+                            <Ionicons name={focused ? 'home' : 'home-outline'} size={size} color={color} />
+                        ),
+                    }}
+                />
+
+                {/* 3. Account */}
+                <Tabs.Screen
+                    name="account"
+                    options={{
+                        tabBarLabel: 'Konto',
+                        tabBarIcon: ({ color, size, focused }) => (
+                            <Ionicons name={focused ? 'person' : 'person-outline'} size={size} color={color} />
+                        ),
+                    }}
+                />
             </Tabs>
         </SafeAreaView>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#E06363',
-        padding: 16,
-    },
-});

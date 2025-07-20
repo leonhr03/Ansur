@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { useRouter } from "expo-router";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { getFirebaseAuth } from "@/firebase";
@@ -21,7 +21,7 @@ export default function Index() {
     };
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <Text style={styles.title}>Login</Text>
             <TextInput
                 style={styles.input}
@@ -45,14 +45,33 @@ export default function Index() {
                 <Text style={styles.link}>Don't have an account? Create one</Text>
             </TouchableOpacity>
             {message ? <Text style={styles.message}>{message}</Text> : null}
-        </View>
+        </SafeAreaView>
     );
 }
 
 
 const styles = StyleSheet.create({
-    container: { flex: 1, justifyContent: 'center', padding: 20, backgroundColor: "#E06363", },
-    title: { fontSize: 30, marginBottom: 70, textAlign: 'center', color: "#EF9999" },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        padding: 20,
+        backgroundColor: "#E06363",
+    },
+
+    heading: {
+        textAlign: 'center',
+        fontSize: 25,
+        fontWeight: "bold",
+        color: "#EF9999",
+    },
+
+    title: {
+        fontSize: 30,
+        marginBottom: 70,
+        textAlign: 'center',
+        color: "#EF9999",
+    },
+
     input: {
         fontSize: 20,
         borderWidth: 1,

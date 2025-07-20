@@ -12,11 +12,11 @@ const firebaseConfig = {
     measurementId: "G-44464ZL7W1"
 };
 
-let app; // singleton
-
-export function getFirebaseAuth() {
-    if (!app) {
-        app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-    }
-    return getAuth(app);
+let app;
+if (getApps().length === 0) {
+    app = initializeApp(firebaseConfig);
+} else {
+    app = getApps()[0];
 }
+
+export const getFirebaseAuth = () => getAuth(app);

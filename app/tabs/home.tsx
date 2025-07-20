@@ -2,7 +2,6 @@ import React from 'react';
 import {StyleSheet, View, Text, SafeAreaView, FlatList, ListRenderItem, Button, TouchableOpacity} from "react-native";
 import 'react-native-url-polyfill/auto';
 
-
 function comming(){
     alert("comming soon...")
 }
@@ -42,7 +41,14 @@ export default function home(){
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: "#E06363",
+        padding: 16,
+    },
+
     heading: {
+        marginTop: 20,
         textAlign: 'center',
         fontSize: 25,
         fontWeight: "bold",
@@ -60,12 +66,6 @@ const styles = StyleSheet.create({
     question: {
         fontSize: 18,
         color: "#E06363"
-    },
-
-    container: {
-        flex: 1,
-        backgroundColor: "#E06363",
-        padding: 16,
     },
 
     list: {
