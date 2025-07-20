@@ -46,7 +46,7 @@ export default function Register() {
             <TouchableOpacity style={styles.button} onPress={register}>
                 <Text style={styles.buttonText}>register</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => router.push("/register")}>
+            <TouchableOpacity onPress={() => router.push("/")}>
                 <Text style={styles.link}>Already have a Account? Log in</Text>
             </TouchableOpacity>
             {message ? <Text style={styles.message}>{message}</Text> : null}
@@ -55,8 +55,27 @@ export default function Register() {
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, justifyContent: 'center', padding: 20, backgroundColor: "#E06363", },
-    title: { fontSize: 30, marginBottom: 70, textAlign: 'center', color: "#EF9999" },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        padding: 20,
+        backgroundColor: "#E06363",
+    },
+
+    heading: {
+        textAlign: 'center',
+        fontSize: 25,
+        fontWeight: "bold",
+        color: "#EF9999",
+    },
+
+    title: {
+        fontSize: 30,
+        marginBottom: 70,
+        textAlign: 'center',
+        color: "#EF9999",
+    },
+
     input: {
         fontSize: 20,
         borderWidth: 1,
@@ -92,6 +111,7 @@ const styles = StyleSheet.create({
     },
 
     link: {
+        fontSize: 18,
         textAlign: "center",
         color: "#EF9999",
         marginTop: 20,
