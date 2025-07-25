@@ -1,10 +1,8 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Text, SafeAreaView, FlatList, ListRenderItem, Button, TouchableOpacity} from "react-native";
 import 'react-native-url-polyfill/auto';
-
-function comming(){
-    alert("comming soon...")
-}
+import {onValue, ref} from "firebase/database";
+import {db} from "@/firebase";
 
 type DataItem = {
     id: string;
@@ -16,29 +14,52 @@ const data: DataItem[] = [
     { id: '2', title: 'question 2' },
     { id: '3', title: 'question 3' },
 ];
-export default function home(){
+export default function Home() {
+    const [data, setData] = useState<DataItem[]>([]);
+
+    useEffect(() => {
+        const questionsRef = ref(db, 'questions');
+
+        const unsubscribe = onValue(questionsRef, (snapshot) => {
+            const dataFromDB = snapshot.val() as Record<string, { question: string }>;
+
+            if (dataFromDB) {
+                const loadedData = Object.entries(dataFromDB).map(([id, value]) => ({
+                    id,
+                    title: value.question || 'Keine Frage',
+                }));
+                setData(loadedData);
+            } else {
+                setData([]);
+            }
+        });
+
+        return () => unsubscribe();
+    }, []);
+
 
     const renderItem: ListRenderItem<DataItem> = ({ item }) => (
         <View style={styles.item}>
             <Text style={styles.question}>{item.title}</Text>
-            <TouchableOpacity style={styles.button} onPress={comming}>
+            <TouchableOpacity style={styles.button} onPress={() => alert("comming soon...")}>
                 <Text style={styles.text}>zu den Antworten</Text>
             </TouchableOpacity>
         </View>
     );
 
-    // @ts-ignore
-    return(
+    return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.heading}>Ansur</Text>
             <FlatList
                 style={styles.list}
                 data={data}
                 renderItem={renderItem}
-                keyExtractor={item => item.id}/>
+                keyExtractor={item => item.id}
+            />
         </SafeAreaView>
-    )
+    );
 }
+
 
 const styles = StyleSheet.create({
     container: {

@@ -15,14 +15,14 @@ export default function TabsLayout() {
                     tabBarStyle: {
                         borderRadius: 15,
                         backgroundColor: '#EF9999',
-                        marginBottom: 16,
+                        marginBottom: 19,
                         marginLeft: 10,
                         marginRight: 10,
                         padding: 20,
                         position: 'absolute',
                         elevation: 1,
-                        borderWidth: 1,
-                        borderColor: '#EF9999',
+                        borderWidth: 0,
+                        borderColor: '#E06363',
                     },
                     tabBarLabelStyle: {
                         color: '#E06363',

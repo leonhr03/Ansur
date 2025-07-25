@@ -1,5 +1,7 @@
 import { Stack, usePathname, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
+import { getFirebaseAuth } from '@/firebase';
 
 export default function AuthLayout() {
     const pathname = usePathname();
@@ -19,6 +21,7 @@ export default function AuthLayout() {
             return;
         }
     }, [isMounted, pathname, isLoggedIn, router]);
+
 
     return <Stack screenOptions={{ headerShown: false }} />;
 }
