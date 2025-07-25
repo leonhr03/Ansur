@@ -1,11 +1,28 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, SafeAreaView, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { db } from '@/firebase'; // Realtime DB
-import { ref, push, serverTimestamp } from 'firebase/database'; // WICHTIG: Realtime Imports
+import {db, getFirebaseAuth} from '@/firebase'; // Realtime DB
+import { ref, push, serverTimestamp } from 'firebase/database';
+import { signOut } from "firebase/auth";
+import {router} from "expo-router";
+
 
 export default function Account() {
     const [question, setQuestion] = useState('');
+
+    const auth = getFirebaseAuth();
+
+
+    const Logout = async () => {
+        signOut(auth)
+            .then(() => {
+                router.replace("/");
+            })
+            .catch((error) => {
+                console.error("Error", error);
+            });
+
+    }
 
     const writeQuestion = async () => {
         if (!question.trim()) {
@@ -40,6 +57,10 @@ export default function Account() {
             <TouchableOpacity style={styles.button} onPress={writeQuestion}>
                 <Text style={styles.inputText}>Add Question</Text>
             </TouchableOpacity>
+            <TouchableOpacity  style={styles.buLogout} onPress={Logout}>
+                <Text style={styles.inputLogout}>Logout</Text>
+            </TouchableOpacity>
+
         </SafeAreaView>
     );
 }
@@ -91,8 +112,17 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
 
+    buLogout: {
+        marginTop: 60,
+    },
+
     inputText: {
         color: '#E06363',
+        textAlign: 'center'
+    },
+
+    inputLogout: {
+        color: '#EF9999',
         textAlign: 'center'
     },
 });
