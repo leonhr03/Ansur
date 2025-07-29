@@ -49,7 +49,7 @@ export default function Home() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.heading}>Ansur</Text>
+            {} <Text style={styles.heading}>Ansur</Text>
             <FlatList
                 style={styles.list}
                 data={data}
@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
 
     list: {
         marginTop: 20,
+        marginBottom: 60,
     },
 
     button: {

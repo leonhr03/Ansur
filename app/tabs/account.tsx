@@ -50,9 +50,11 @@ export default function Account() {
             <Text style={styles.nameText}>Username</Text>
             <TextInput
                 style={styles.input}
-                onChangeText={setQuestion}
+                placeholder="type in your question"
+                placeholderTextColor={"#E06363"}
+                autoCapitalize="none"
                 value={question}
-                placeholder="Type in your question"
+                onChangeText={setQuestion}
             />
             <TouchableOpacity style={styles.button} onPress={writeQuestion}>
                 <Text style={styles.inputText}>Add Question</Text>
@@ -93,23 +95,26 @@ const styles = StyleSheet.create({
     },
 
     input: {
-        height: 40,
-        margin: 12,
-        marginTop: 90,
+        fontSize: 20,
         borderWidth: 1,
-        padding: 10,
-        backgroundColor: '#EF9999',
-        borderRadius: 15,
         borderColor: '#EF9999',
+        padding: 12,
+        borderRadius: 8,
+        marginBottom: 16,
+        marginTop: 90,
+        backgroundColor: '#EF9999',
+        color: "#E06363",
         width: '80%',
-        color: '#E06363',
+        alignSelf: 'center',
     },
+
 
     button: {
         backgroundColor: '#EF9999',
         borderRadius: 12,
         padding: 10,
-        marginTop: 10
+        marginTop: 10,
+
     },
 
     buLogout: {
@@ -118,11 +123,13 @@ const styles = StyleSheet.create({
 
     inputText: {
         color: '#E06363',
-        textAlign: 'center'
+        textAlign: 'center',
+        fontSize: 18,
     },
 
     inputLogout: {
         color: '#EF9999',
-        textAlign: 'center'
+        textAlign: 'center',
+        fontSize: 18,
     },
 });

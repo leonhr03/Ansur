@@ -1,7 +1,8 @@
 import { Tabs } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView } from 'react-native';
+import {SafeAreaView, StyleSheet, Text} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import React from "react";
 
 export default function TabsLayout() {
     return (
@@ -65,3 +66,5 @@ export default function TabsLayout() {
         </SafeAreaView>
     );
 }
+
+
