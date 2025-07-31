@@ -7,10 +7,19 @@ import { signOut } from "firebase/auth";
 import {router} from "expo-router";
 
 
+
+
+
+
+
 export default function Account() {
+
+
+
     const [question, setQuestion] = useState('');
 
     const auth = getFirebaseAuth();
+    const user = auth.currentUser;
 
 
     const Logout = async () => {
@@ -43,11 +52,12 @@ export default function Account() {
         }
     };
 
+
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.heading}>Account</Text>
             <Ionicons name="person" size={140} color="black" style={styles.icon} />
-            <Text style={styles.nameText}>Username</Text>
+            <Text style={styles.nameText}>{user?.email ?? "no user"}</Text>
             <TextInput
                 style={styles.input}
                 placeholder="type in your question"

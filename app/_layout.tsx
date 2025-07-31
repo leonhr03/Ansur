@@ -7,21 +7,32 @@ export default function AuthLayout() {
     const pathname = usePathname();
     const router = useRouter();
     const [isMounted, setIsMounted] = useState(false);
-    const isLoggedIn = true;
+    const [isLoggedIn, setIsLoggedIn] = useState(null); // null = loading, true/false = status
 
     useEffect(() => {
-        setIsMounted(true);
+        const auth = getFirebaseAuth();
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            // @ts-ignore
+            setIsLoggedIn(!!user); // true wenn user existiert, sonst false
+            setIsMounted(true);
+        });
+
+        return unsubscribe; // Clean up listener on unmount
     }, []);
 
     useEffect(() => {
-        if (!isMounted || !pathname) return;
+        if (!isMounted || isLoggedIn === null || !pathname) return;
 
+        // Wenn nicht eingeloggt und in privatem Bereich
         if (!isLoggedIn && pathname.startsWith('/tabs')) {
             router.replace('/');
-            return;
         }
-    }, [isMounted, pathname, isLoggedIn, router]);
 
+        // Wenn eingeloggt und auf Loginseite weiterleiten
+        if (isLoggedIn && pathname === '/') {
+            router.replace('/tabs/home');
+        }
+    }, [isMounted, isLoggedIn, pathname, router]);
 
     return <Stack screenOptions={{ headerShown: false }} />;
 }

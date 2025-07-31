@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
         marginLeft: 60,
         marginRight: 60,
     },
+
     buttonText: {
         color: '#E06363',
         fontSize: 20,
