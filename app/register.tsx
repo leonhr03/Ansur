@@ -31,6 +31,7 @@ export default function Register() {
             <TextInput
                 style={styles.input}
                 placeholder="E-Mail"
+                placeholderTextColor={"#E06363"}
                 autoCapitalize="none"
                 keyboardType="email-address"
                 value={email}
@@ -39,6 +40,7 @@ export default function Register() {
             <TextInput
                 style={styles.input}
                 placeholder="Passwort"
+                placeholderTextColor={"#E06363"}
                 secureTextEntry
                 value={password}
                 onChangeText={setPassword}
@@ -100,7 +102,7 @@ const styles = StyleSheet.create({
         marginRight: 60,
     },
     buttonText: {
-        color: 'white',
+        color: '#E06363',
         fontSize: 20,
         textAlign: 'center',
     },

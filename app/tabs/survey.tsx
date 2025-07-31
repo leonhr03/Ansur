@@ -12,22 +12,24 @@ import {
 const { height } = Dimensions.get('window');
 
 const questions = [
-    { id: '1', text: 'frage 1' },
-    { id: '2', text: 'frage 2' },
-    { id: '3', text: 'frage 3' },
-    { id: '4', text: 'frage 4' },
-    { id: '5', text: 'frage 5' },
-    { id: '6', text: 'frage 6' },
-    { id: '7', text: 'frage 7' },
-    { id: '8', text: 'frage 8' },
-    { id: '9', text: 'frage 9' },
-    { id: '10', text: 'frage 10' },
-    { id: '11', text: 'frage 11' },
-    { id: '12', text: 'frage 12' },
-    { id: '13', text: 'frage 13' },
-    { id: '14', text: 'frage 14' },
-    { id: '15', text: 'frage 15' },
-    { id: '16', text: 'frage 16' },
+        { "id": "1", "text": "Hast du heute schon gegessen?" },
+        { "id": "2", "text": "Magst du Kaffee?" },
+        { "id": "3", "text": "Bist du schon einmal geflogen?" },
+        { "id": "4", "text": "Hast du Haustiere?" },
+        { "id": "5", "text": "Warst du schon mal im Ausland?" },
+        { "id": "6", "text": "Sprichst du mehr als eine Sprache?" },
+        { "id": "7", "text": "Hast du Geschwister?" },
+        { "id": "8", "text": "Magst du Sport?" },
+        { "id": "9", "text": "Glaubst du an Glück?" },
+        { "id": "10", "text": "Liebst du Schokolade?" },
+        { "id": "11", "text": "Arbeitest du gern im Team?" },
+        { "id": "12", "text": "Bist du frühaufsteher?" },
+        { "id": "13", "text": "Liest du gern Bücher?" },
+        { "id": "14", "text": "Kochst du selbst?" },
+        { "id": "15", "text": "Interessierst du dich für Technik?" },
+        { "id": "16", "text": "more comming soon..." }
+
+
 ];
 
 export default function Survey() {

@@ -3,6 +3,9 @@ import {StyleSheet, View, Text, SafeAreaView, FlatList, ListRenderItem, Button, 
 import 'react-native-url-polyfill/auto';
 import {onValue, ref} from "firebase/database";
 import {db} from "@/firebase";
+import {useRouter} from "expo-router";
+
+
 
 type DataItem = {
     id: string;
@@ -10,12 +13,13 @@ type DataItem = {
 };
 
 const data: DataItem[] = [
-    { id: '1', title: 'question 1' },
-    { id: '2', title: 'question 2' },
-    { id: '3', title: 'question 3' },
+    { id: '1', title: 'answer 1' },
+    { id: '2', title: 'answer 2' },
+    { id: '3', title: 'answer 3' },
 ];
 export default function Home() {
     const [data, setData] = useState<DataItem[]>([]);
+    const router = useRouter();
 
     useEffect(() => {
         const questionsRef = ref(db, 'questions');
@@ -41,9 +45,13 @@ export default function Home() {
     const renderItem: ListRenderItem<DataItem> = ({ item }) => (
         <View style={styles.item}>
             <Text style={styles.question}>{item.title}</Text>
-            <TouchableOpacity style={styles.button} onPress={() => alert("comming soon...")}>
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => router.push(`/pages/answer?question=${encodeURIComponent(item.title)}&id=${item.id}`)}
+            >
                 <Text style={styles.text}>zu den Antworten</Text>
             </TouchableOpacity>
+
         </View>
     );
 
