@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, SafeAreaView, TouchableOpacity, TextInput, Alert } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+    StyleSheet,
+    Text,
+    SafeAreaView,
+    TouchableOpacity,
+    Alert,
+    View
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import {db, getFirebaseAuth} from '@/firebase'; // Realtime DB
-import { ref, push, serverTimestamp } from 'firebase/database';
-import { signOut } from "firebase/auth";
-import {router} from "expo-router";
+import { getFirebaseAuth } from '@/firebase';
+import { signOut } from 'firebase/auth';
+import { useRouter } from 'expo-router';
+
 
 
 
@@ -15,67 +22,52 @@ import {router} from "expo-router";
 export default function Account() {
 
 
-
-    const [question, setQuestion] = useState('');
-
     const auth = getFirebaseAuth();
     const user = auth.currentUser;
+    const router = useRouter();
 
 
-    const Logout = async () => {
-        signOut(auth)
-            .then(() => {
-                router.replace("/");
-            })
-            .catch((error) => {
-                console.error("Error", error);
-            });
 
-    }
-
-    const writeQuestion = async () => {
-        if (!question.trim()) {
-            Alert.alert('Bitte gib eine Frage ein!');
-            return;
-        }
-
+    const handleLogout = async () => {
         try {
-            const questionsRef = ref(db, 'questions'); // Referenz zur questions-Collection
-            await push(questionsRef, {
-                question,
-            });
-            Alert.alert('question is saved!');
-            setQuestion('');
+            await signOut(auth);
+            router.replace('/');
         } catch (error: any) {
-            Alert.alert('Error:', error.message);
-            console.error(error);
+            Alert.alert('Logout failed', error.message);
         }
     };
 
 
+
+
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.heading}>Account</Text>
+            <View style={styles.questionHeader}>
+                <View style={{ flex: 1, alignItems: 'center' }}>
+                    <Text style={styles.heading}>Account</Text>
+                </View>
+            </View>
+
             <Ionicons name="person" size={140} color="black" style={styles.icon} />
-            <Text style={styles.nameText}>{user?.email ?? "no user"}</Text>
-            <TextInput
-                style={styles.input}
-                placeholder="type in your question"
-                placeholderTextColor={"#E06363"}
-                autoCapitalize="none"
-                value={question}
-                onChangeText={setQuestion}
-            />
-            <TouchableOpacity style={styles.button} onPress={writeQuestion}>
-                <Text style={styles.inputText}>Add Question</Text>
+            <Text style={styles.nameText}>{user?.email ?? 'No user logged in'}</Text>
+
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => router.push(`/pages/myquestions`)}>
+                <Text style={styles.inputText}>To My Questions</Text>
             </TouchableOpacity>
-            <TouchableOpacity  style={styles.buLogout} onPress={Logout}>
-                <Text style={styles.inputLogout}>Logout</Text>
+
+
+            <TouchableOpacity
+                style={styles.logoutButton}
+                onPress={handleLogout}>
+                <Text style={styles.logoutText}>Logout</Text>
             </TouchableOpacity>
 
         </SafeAreaView>
     );
 }
+
 
 const styles = StyleSheet.create({
     container: {
@@ -85,16 +77,8 @@ const styles = StyleSheet.create({
         padding: 16
     },
 
-    heading: {
-        textAlign: 'center',
-        fontSize: 25,
-        fontWeight: 'bold',
-        color: '#EF9999',
-        marginTop: 20
-    },
-
     icon: {
-        marginTop: 80,
+        marginTop: 50,
         color: '#EF9999'
     },
 
@@ -111,7 +95,7 @@ const styles = StyleSheet.create({
         padding: 12,
         borderRadius: 8,
         marginBottom: 16,
-        marginTop: 90,
+        marginTop: 50,
         backgroundColor: '#EF9999',
         color: "#E06363",
         width: '80%',
@@ -123,12 +107,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#EF9999',
         borderRadius: 12,
         padding: 10,
-        marginTop: 10,
+        marginTop: 50,
 
-    },
-
-    buLogout: {
-        marginTop: 60,
     },
 
     inputText: {
@@ -137,9 +117,57 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
 
-    inputLogout: {
+    logoutButton: {
+        marginTop: 50,
+
+    },
+
+    logoutText: {
         color: '#EF9999',
         textAlign: 'center',
         fontSize: 18,
     },
+
+    inputLogout: {
+        color: '#EF9999',
+        textAlign: 'center',
+        fontSize: 18,
+        marginTop: 80,
+    },
+
+    questionHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
+        paddingHorizontal: 16,
+        marginTop: 20,
+    },
+
+    heading: {
+        fontSize: 25,
+        fontWeight: 'bold',
+        color: '#EF9999',
+    },
+
+    item: {
+        backgroundColor: '#EF9999',
+        padding: 20,
+        marginBottom: 15,
+        marginHorizontal: 16,
+        borderRadius: 15,
+    },
+
+    question: {
+        fontSize: 18,
+        color: "#E06363",
+    },
+
+
+    text: {
+        color: "#EF9999",
+        textAlign: "center",
+    },
+
+
 });

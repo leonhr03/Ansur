@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, Text, SafeAreaView, FlatList, ListRenderItem, Button, TouchableOpacity} from "react-native";
+import {StyleSheet, View, Text, SafeAreaView, FlatList, ListRenderItem, TouchableOpacity, TextInput} from "react-native";
 import 'react-native-url-polyfill/auto';
 import {onValue, ref} from "firebase/database";
 import {db} from "@/firebase";
 import {useRouter} from "expo-router";
-
 
 
 type DataItem = {
@@ -12,26 +11,27 @@ type DataItem = {
     title: string;
 };
 
-const data: DataItem[] = [
-    { id: '1', title: 'answer 1' },
-    { id: '2', title: 'answer 2' },
-    { id: '3', title: 'answer 3' },
-];
+
 export default function Home() {
     const [data, setData] = useState<DataItem[]>([]);
+    const [searchTerm, setSearchTerm] = useState('');
     const router = useRouter();
 
     useEffect(() => {
         const questionsRef = ref(db, 'questions');
 
         const unsubscribe = onValue(questionsRef, (snapshot) => {
-            const dataFromDB = snapshot.val() as Record<string, { question: string }>;
+            const dataFromDB = snapshot.val() as Record<string, { question: string, createdAt?: number }>;
 
             if (dataFromDB) {
-                const loadedData = Object.entries(dataFromDB).map(([id, value]) => ({
-                    id,
-                    title: value.question || 'Keine Frage',
-                }));
+                const loadedData = Object.entries(dataFromDB)
+                    .map(([id, value]) => ({
+                        id,
+                        title: value.question || 'No question',
+                        createdAt: value.createdAt || 0,
+                    }))
+                    .sort((a, b) => b.createdAt - a.createdAt)
+                    .map(({id, title}) => ({id, title}));
                 setData(loadedData);
             } else {
                 setData([]);
@@ -41,6 +41,9 @@ export default function Home() {
         return () => unsubscribe();
     }, []);
 
+    const filteredData = data.filter(item =>
+        item.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     const renderItem: ListRenderItem<DataItem> = ({ item }) => (
         <View style={styles.item}>
@@ -49,25 +52,30 @@ export default function Home() {
                 style={styles.button}
                 onPress={() => router.push(`/pages/answer?question=${encodeURIComponent(item.title)}&id=${item.id}`)}
             >
-                <Text style={styles.text}>zu den Antworten</Text>
+                <Text style={styles.text}>to answers</Text>
             </TouchableOpacity>
-
         </View>
     );
 
     return (
         <SafeAreaView style={styles.container}>
-            {} <Text style={styles.heading}>Ansur</Text>
+            <Text style={styles.heading}>Ansur</Text>
+            <TextInput
+                style={styles.searchInput}
+                placeholder="Suche..."
+                placeholderTextColor={"#E06363"}
+                value={searchTerm}
+                onChangeText={setSearchTerm}
+            />
             <FlatList
                 style={styles.list}
-                data={data}
+                data={filteredData}
                 renderItem={renderItem}
                 keyExtractor={item => item.id}
             />
         </SafeAreaView>
     );
 }
-
 
 const styles = StyleSheet.create({
     container: {
@@ -84,21 +92,30 @@ const styles = StyleSheet.create({
         color: "#EF9999"
     },
 
+    searchInput: {
+        backgroundColor: '#EF9999',
+        marginHorizontal: 5,
+        borderRadius: 15,
+        padding: 10,
+        marginTop: 10,
+        color: '#E06363',
+        fontSize: 16,
+    },
+
     item: {
         backgroundColor: '#EF9999',
         padding: 20,
-        marginBottom: 15,
+        marginTop: 15,
         marginHorizontal: 16,
         borderRadius: 15,
     },
 
     question: {
         fontSize: 18,
-        color: "#E06363"
+        color: "#E06363",
     },
 
     list: {
-        marginTop: 20,
         marginBottom: 60,
     },
 
@@ -108,13 +125,10 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         marginTop: 20,
         borderWidth: 0,
-
-
     },
 
     text: {
         color: "#EF9999",
         textAlign: "center",
     }
-
-})
+});

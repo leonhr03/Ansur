@@ -27,7 +27,7 @@ const questions = [
         { "id": "13", "text": "Liest du gern Bücher?" },
         { "id": "14", "text": "Kochst du selbst?" },
         { "id": "15", "text": "Interessierst du dich für Technik?" },
-        { "id": "16", "text": "more comming soon..." }
+        { "id": "16", "text": "findest du die App gut?" }
 
 
 ];
@@ -38,14 +38,7 @@ export default function Survey() {
     const flatListRef = useRef<FlatList>(null);
 
     const handleAnswer = (id: string, answer: 'ja' | 'nein' | 'keine') => {
-        setAnswers((prev) => ({ ...prev, [id]: answer }));
 
-        if (currentIndex < questions.length - 1) {
-            const nextIndex = currentIndex + 1;
-            setCurrentIndex(nextIndex);
-            flatListRef.current?.scrollToIndex({ index: nextIndex, animated: true });
-        }
-        // Hier kannst du auch eine Aktion einbauen, wenn das Ende erreicht ist
     };
 
     const renderItem = ({ item }: any) => (
@@ -53,13 +46,13 @@ export default function Survey() {
             <Text style={styles.question}>{item.text}</Text>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
-                    style={[styles.button, { backgroundColor: '#EF9999' }]}
+                    style={[styles.button, { backgroundColor: '#E06363' }]}
                     onPress={() => handleAnswer(item.id, 'ja')}
                 >
                     <Text style={styles.buttonText}>Ja</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={[styles.button, { backgroundColor: '#EF9999' }]}
+                    style={[styles.button, { backgroundColor: '#E06363' }]}
                     onPress={() => handleAnswer(item.id, 'nein')}
                 >
                     <Text style={styles.buttonText}>Nein</Text>
@@ -75,22 +68,12 @@ export default function Survey() {
         <SafeAreaView style={styles.container}>
             <Text style={styles.heading}>Survey</Text>
             <FlatList
+                style={styles.list}
                 ref={flatListRef}
                 data={questions}
                 keyExtractor={(item) => item.id}
                 renderItem={renderItem}
-                pagingEnabled
-                scrollEnabled={false}
                 decelerationRate="fast"
-                snapToAlignment="start"
-                showsVerticalScrollIndicator={false}
-                snapToInterval={availableHeight}
-                getItemLayout={(_, index) => ({
-                    length: availableHeight,
-                    offset: availableHeight * index,
-                    index,
-                })}
-                initialScrollIndex={0}
             />
         </SafeAreaView>
     );
@@ -102,11 +85,16 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#E06363',
+        padding: 16,
+    },
+
+    list: {
+        marginTop: 20,
+        marginBottom: 60,
     },
 
     heading: {
         marginTop: 20,
-        paddingHorizontal: 16,
         textAlign: 'center',
         fontSize: 25,
         fontWeight: "bold",
@@ -114,16 +102,19 @@ const styles = StyleSheet.create({
     },
 
     page: {
-        height: availableHeight,
+        backgroundColor: "#EF9999",
         justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: 24,
-        paddingVertical: 20,
+        paddingVertical: 130,
+        marginVertical: 15,
+        marginHorizontal: 20,
+        borderRadius: 15,
     },
 
     question: {
         fontSize: 26,
-        color: '#EF9999',
+        color: '#E06363',
         textAlign: 'center',
         marginBottom: 40,
     },
@@ -140,11 +131,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     buttonText: {
-        color: '#E06363',
+        color: '#EF9999',
         fontSize: 20,
     },
     noAnswerText: {
-        color: '#EF9999',
+        color: '#E06363',
         fontSize: 18,
         textAlign: 'center',
         textDecorationLine: 'underline',
