@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
     StyleSheet,
     Text,
@@ -8,59 +8,57 @@ import {
     Dimensions,
     TouchableOpacity,
 } from 'react-native';
-
-const { height } = Dimensions.get('window');
-
-const questions = [
-        { "id": "1", "text": "Hast du heute schon gegessen?" },
-        { "id": "2", "text": "Magst du Kaffee?" },
-        { "id": "3", "text": "Bist du schon einmal geflogen?" },
-        { "id": "4", "text": "Hast du Haustiere?" },
-        { "id": "5", "text": "Warst du schon mal im Ausland?" },
-        { "id": "6", "text": "Sprichst du mehr als eine Sprache?" },
-        { "id": "7", "text": "Hast du Geschwister?" },
-        { "id": "8", "text": "Magst du Sport?" },
-        { "id": "9", "text": "Glaubst du an Glück?" },
-        { "id": "10", "text": "Liebst du Schokolade?" },
-        { "id": "11", "text": "Arbeitest du gern im Team?" },
-        { "id": "12", "text": "Bist du frühaufsteher?" },
-        { "id": "13", "text": "Liest du gern Bücher?" },
-        { "id": "14", "text": "Kochst du selbst?" },
-        { "id": "15", "text": "Interessierst du dich für Technik?" },
-        { "id": "16", "text": "findest du die App gut?" }
+import {onValue, ref} from "firebase/database";
+import {db} from "@/firebase";
 
 
-];
+type DataItem = {
+    id: string;
+    title: string;
+};
+
 
 export default function Survey() {
-    const [answers, setAnswers] = useState<{ [key: string]: string }>({});
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [data, setData] = useState<DataItem[]>([]);
     const flatListRef = useRef<FlatList>(null);
 
-    const handleAnswer = (id: string, answer: 'ja' | 'nein' | 'keine') => {
 
-    };
+    useEffect(() => {
+        const surveyRef = ref(db, 'survey');
+
+        const unsubscribe = onValue(surveyRef, (snapshot) => {
+            const dataFromDB = snapshot.val() as Record<string, { question: string, createdAt?: number }>;
+
+            if (dataFromDB) {
+                const loadedData = Object.entries(dataFromDB)
+                    .map(([id, value]) => ({
+                        id,
+                        title: value.question || 'No question',
+                        createdAt: value.createdAt || 0,
+                    }))
+                    .sort((a, b) => b.createdAt - a.createdAt)
+                    .map(({id, title}) => ({id, title}));
+                setData(loadedData);
+            } else {
+                setData([]);
+            }
+        });
+
+        return () => unsubscribe();
+    }, []);
 
     const renderItem = ({ item }: any) => (
         <View style={styles.page}>
-            <Text style={styles.question}>{item.text}</Text>
+            <Text style={styles.question}>{item.title}</Text>
             <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                    style={[styles.button, { backgroundColor: '#E06363' }]}
-                    onPress={() => handleAnswer(item.id, 'ja')}
-                >
+                <TouchableOpacity style={[styles.button, { backgroundColor: '#E06363' }]}>
                     <Text style={styles.buttonText}>Ja</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                    style={[styles.button, { backgroundColor: '#E06363' }]}
-                    onPress={() => handleAnswer(item.id, 'nein')}
-                >
+                <TouchableOpacity style={[styles.button, { backgroundColor: '#E06363' }]}>
                     <Text style={styles.buttonText}>Nein</Text>
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={() => handleAnswer(item.id, 'keine')}>
-                <Text style={styles.noAnswerText}>Keine Antwort</Text>
-            </TouchableOpacity>
+
         </View>
     );
 
@@ -69,11 +67,9 @@ export default function Survey() {
             <Text style={styles.heading}>Survey</Text>
             <FlatList
                 style={styles.list}
-                ref={flatListRef}
-                data={questions}
-                keyExtractor={(item) => item.id}
+                data={data}
                 renderItem={renderItem}
-                decelerationRate="fast"
+                keyExtractor={item => item.id}
             />
         </SafeAreaView>
     );

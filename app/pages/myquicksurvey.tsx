@@ -26,8 +26,8 @@ export default function MyQuestions(){
         title: string;
     };
 
-    const [userQuestions, setUserQuestions] = useState<DataItem[]>([]);
-    const [question, setQuestion] = useState('');
+    const [userSurvey, setUsersurvey] = useState<DataItem[]>([]);
+    const [survey, setSurvey] = useState('');
     const router = useRouter();
     const auth = getFirebaseAuth();
     const user = auth.currentUser;
@@ -36,10 +36,10 @@ export default function MyQuestions(){
     useEffect(() => {
         if (!user) return;
 
-        const questionsRef = ref(db, 'questions');
-        const userQuestionsQuery = query(questionsRef, orderByChild('userId'), equalTo(user.uid));
+        const surveyRef = ref(db, 'survey');
+        const userSurveyQuery = query(surveyRef, orderByChild('userId'), equalTo(user.uid));
 
-        const unsubscribe = onValue(userQuestionsQuery, (snapshot) => {
+        const unsubscribe = onValue(userSurveyQuery, (snapshot) => {
             const dataFromDB = snapshot.val() as Record<string, { question: string, createdAt?: number }>;
 
             if (dataFromDB) {
@@ -51,9 +51,9 @@ export default function MyQuestions(){
                     }))
                     .sort((a, b) => b.createdAt - a.createdAt);
 
-                setUserQuestions(loadedData);
+                setUsersurvey(loadedData);
             } else {
-                setUserQuestions([]);
+                setUsersurvey([]);
             }
         });
 
@@ -62,21 +62,22 @@ export default function MyQuestions(){
 
 
     const writeQuestion = async () => {
-
-        if (!question.trim()) {
+        Alert.alert('Button works!');
+        if (!survey.trim()) {
             Alert.alert('Please enter a question!');
             return;
         }
 
         try {
-            const questionsRef = ref(db, 'questions');
+            const questionsRef = ref(db, 'survey');
             await push(questionsRef, {
-                question,
+                question: survey,
                 createdAt: Date.now(),
                 userId: user?.uid,
             });
 
-            setQuestion('');
+
+            setSurvey('');
         } catch (error: any) {
             Alert.alert('Error:', error.message);
             console.error(error);
@@ -86,49 +87,41 @@ export default function MyQuestions(){
     const renderItem: ListRenderItem<DataItem> = ({ item }) => (
         <View style={styles.item}>
             <Text style={styles.question}>{item.title}</Text>
-            <TouchableOpacity
-                style={styles.itemButton}
-                onPress={() =>
-                    router.push(`/pages/answer?question=${encodeURIComponent(item.title)}&id=${item.id}`)
-                }
-            >
-                <Text style={styles.text}>to answers</Text>
-            </TouchableOpacity>
         </View>
     );
 
     return(
         <SafeAreaView style={styles.container}>
-                <View style={styles.questionHeader}>
-                    <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-                        <Text style={styles.backText}>←</Text>
-                    </TouchableOpacity>
-                    <Text style={styles.questionHeading}>MyQuestions</Text>
-                </View>
+            <View style={styles.questionHeader}>
+                <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+                    <Text style={styles.backText}>←</Text>
+                </TouchableOpacity>
+                <Text style={styles.questionHeading}>My Quicksurveys</Text>
+            </View>
             <View style={styles.linkContainer}>
-                <Link href={"/pages/myquestions"} style={styles.linkClicked}>Question</Link>
-                <Link href={"/pages/myquicksurvey"} style={styles.link}>Survey</Link>
+                <Link href={"/pages/myquestions"} style={styles.link}>Question</Link>
+                <Link href={"/pages/myquicksurvey"} style={styles.linkClicked}>Survey</Link>
             </View>
 
-                <FlatList
-                    style={styles.list}
-                    data={userQuestions}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.id}
-                />
+            <FlatList
+                style={styles.list}
+                data={userSurvey}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.id}
+            />
 
-                <View style={styles.inputRow}>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Add a Question"
-                        placeholderTextColor="#EF9999"
-                        value={question}
-                        onChangeText={setQuestion}
-                    />
-                    <TouchableOpacity style={styles.button} onPress={writeQuestion}>
-                        <Text style={styles.text}>add</Text>
-                    </TouchableOpacity>
-                </View>
+            <View style={styles.inputRow}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Add a Question"
+                    placeholderTextColor="#EF9999"
+                    value={survey}
+                    onChangeText={setSurvey}
+                />
+                <TouchableOpacity style={styles.button} onPress={writeQuestion}>
+                    <Text style={styles.text}>add</Text>
+                </TouchableOpacity>
+            </View>
         </SafeAreaView>
     )
 }
@@ -248,8 +241,8 @@ const styles = StyleSheet.create({
     },
 
     link: {
-        marginHorizontal: 30,
-        color: "#E06363",
+      marginHorizontal: 30,
+      color: "#E06363",
     },
 
     linkClicked: {
@@ -259,7 +252,5 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         padding: 5,
     },
-
-
 
 })
